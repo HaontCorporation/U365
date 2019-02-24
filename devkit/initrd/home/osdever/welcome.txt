@@ -1,0 +1,14 @@
+Welcome to U365 1.2!
+
+Changelog:
+
+* FS now works. It's awesome, isn't it?
+* Console cursor is there now.
+* Tons, TONS of new applications.
+* Removed some provocational MOTDs like "DIAMONDSOFT SUX" or "ARTEM KLIMOV U CANT CODE LALALAAALAL".
+* ISH update. Now we have command history and cursor movement!
+* Mouse is finally fixed. "pen" command shows that.
+* Initialization system is completely rewritten. Now its code is way shorter.
+* Simple TUI API is present now. We made a "file-viewer" app specially for that. Enjoy!
+
+That's everything for U365 1.2. Bye! osdever and k1-801 were here.

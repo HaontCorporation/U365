@@ -1,0 +1,5 @@
+/bin/mine
+
+echo Welcome to ESH, U365 external shell
+echo Type help for more info
+echo Type /bin/esh if you need to go deeper

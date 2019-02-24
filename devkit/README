@@ -1,0 +1,19 @@
+U365 Development Kit
+
+U365 development kit includes:
+* U365 1.2 binary;
+* Build script to build binaries without using the cross-compiler;
+* ISO creation script to insert your binaries to U365 and run them in it.
+
+Usage:
+
+./build.sh <your binary name in U365 FS> <initrd path to the binary>
+
+Syscall list:
+
+0 (print_stack)	Dumps stack to the screen. Arguments: N/A
+1 (read)		Reads count bytes to buf from descriptor fd, only stdin (0) works now. Arguments: fd (file descriptor), buf (buffer to read to), count (count of bytes to read)
+2 (write)		Writes count bytes from buf to descriptor fd, only stdout (1) works now. Arguments: fd (file descriptor), buf (buffer to read from), count (count of bytes to write)
+3 (alloc)		Allocates n bytes of memory and puts allocated address to ebx. syscall() function should return that address automatically. Arguments: N/A
+
+You can use syscall() function from example program to call them. Have fun!

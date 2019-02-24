@@ -1,0 +1,4 @@
+echo Welcome to ISH, U365 integrated shell
+echo Type help for more info
+
+/bin/mine
