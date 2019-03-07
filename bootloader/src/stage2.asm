@@ -67,7 +67,8 @@ load_kernelfile:
         mov word [KernelLBA], ax
 
         mov eax, dword [di+0x1C]
-        div word [BytesPerSector]
+        mov ebx, 512
+        div ebx
         inc eax 
         mov [KernelSectorsCount], ax
 
@@ -81,14 +82,46 @@ load_kernelfile:
     mov ax, [KernelLBA]
     mov word [dap.LBA], ax
 
+    cmp word [dap.SectorsCount], 127
+    jg .multiple
+
     mov ah, 42h
     mov dl, [DriveIndex]
     mov si, dap
     int 0x13
-
     jc error
-    
+        
     ret
+
+    .multiple:
+		mov word [dap.SectorsCount], 128
+		
+		mov ah, 42h
+		mov dl, [DriveIndex]
+		mov si, dap
+		
+		int 0x13
+        jc error
+		
+		sub word [KernelSectorsCount], 128
+		add word [dap.LBA], 128
+		add word [dap.BufferSegment], 1000h
+		
+		cmp word [KernelSectorsCount], 127
+		jg .multiple
+		
+	.last:
+		mov ax, [KernelSectorsCount]
+		mov [dap.SectorsCount], ax
+		
+		mov ah, 42h
+		mov dl, [DriveIndex]
+		mov si, dap
+		
+		int 0x13
+        jc error
+		
+		ret
 
 a20_check:
 	xor ax, ax
@@ -269,6 +302,13 @@ setup_paging:
     xor eax, eax
     stosd
 
+    ; Map for Memory-mapped IO Registers
+    mov eax, 0xC0000083
+    mov edi, paging_pdpt_lowerhalf + (3 * 8)
+    stosd
+    xor eax, eax
+    stosd
+
     mov eax, 0x83
     mov edi, paging_pdpt_higherhalf + (511 * 8)
     stosd
@@ -290,6 +330,8 @@ lmode64:
 
 	mov rax, [entry]
     jmp rax
+
+[bits 32]
 
 message: db 'Bootloader: Stage2', 0Dh, 0Ah, 0
 DriveIndex: db 0
